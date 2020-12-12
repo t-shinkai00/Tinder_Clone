@@ -8,14 +8,17 @@ function TinderCards() {
   const [people, setPeople] = useState([]);
   useEffect(() => {
     //this is where the code runs once when the component loads, and never again
-    database.collection("people").onSnapshot((snapshot) => {
+    const unsubscribe = database.collection("people").onSnapshot((snapshot) => {
       setPeople(snapshot.docs.map((doc) => doc.data()));
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
     <div>
-      <h1>TinderCards</h1>
+      {/* <h1>Tinder Cards</h1> */}
       <div className="tinderCards__cardContainer">
         {people.map((person) => (
           <TinderCard
